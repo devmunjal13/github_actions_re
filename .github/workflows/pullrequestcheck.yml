@@ -12,7 +12,7 @@ jobs:
 
     - name: Check for changes in file
       run: |
-        CHANGED_FILES="$(git diff HEAD^1 --name-only)"
+        CHANGED_FILES="$(git diff HEAD --name-only)"
         if echo "$CHANGED_FILES" | grep -q .env.sample; then
           echo "File has changed"
           exit 0

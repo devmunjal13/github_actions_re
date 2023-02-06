@@ -25,7 +25,7 @@ jobs:
     - name: Print Output
       run: echo $CHANGED
     - name: Check wether changes in file or not  
-      if: ${{ env.CHANGED == false }}
+      if: ${{ !env.CHANGED }}
       run: |
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PULL_REQUEST}/comments"
           MESSAGE="The build has completed."

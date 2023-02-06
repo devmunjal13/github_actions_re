@@ -20,8 +20,8 @@ jobs:
           echo "File has changed"
           echo "CHANGED=true" >> $GITHUB_ENV
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues"
-          TITLE="Build Failed"
-          BODY="The build failed for the following reason: ..."
+          TITLE="Environment Changes"
+          BODY="Environment File Changed"
           curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
         else
           echo "File has not changed"

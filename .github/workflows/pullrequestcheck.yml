@@ -17,5 +17,5 @@ jobs:
     - name: Print Env
       run: echo $CHANGED_FILES
     - name: Check wether changes in file or not  
-      if: ${{ $CHANGED_FILES | grep -q .env.sample }}
+      if: ${{ CHANGED_FILES | grep -q .env.sample }}
       run: echo "File Changed"

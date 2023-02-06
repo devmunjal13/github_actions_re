@@ -18,15 +18,12 @@ jobs:
         if echo "$CHANGED_FILES" | grep -q .env.sample; then
           echo "File has changed"
           echo "CHANGED=true" >> $GITHUB_ENV
+          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PULL_REQUEST}/comments"
+          MESSAGE="The build has completed."
+          curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST -d "{\"body\":\"$MESSAGE\"}" $API_URL
         else
           echo "File has not changed"
           echo "CHANGED=false" >> $GITHUB_ENV
         fi
     - name: Print Output
       run: echo $CHANGED
-    - name: Check wether changes in file or not  
-      if: ${{ !env.CHANGED }}
-      run: |
-          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PULL_REQUEST}/comments"
-          MESSAGE="The build has completed."
-          curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST -d "{\"body\":\"$MESSAGE\"}" $API_URL

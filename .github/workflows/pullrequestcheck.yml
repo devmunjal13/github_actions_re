@@ -15,7 +15,6 @@ jobs:
         git fetch
         CHANGED_FILES="$(git diff origin/main --name-only)"
         echo "$CHANGED_FILES"
-        echo "${secrets.TOKEN_SECRET}"
         echo "$GITHUB_REPOSITORY"
         if echo "$CHANGED_FILES" | grep -q .env.sample; then
           echo "File has changed"

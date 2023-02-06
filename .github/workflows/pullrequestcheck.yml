@@ -16,13 +16,14 @@ jobs:
         CHANGED_FILES="$(git diff origin/main --name-only)"
         echo "$CHANGED_FILES"
         echo "$GITHUB_REPOSITORY"
+        EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
+        PULL_REQUEST_NUMBER=$(echo $EVENT_DATA | jq .pull_request.number)
         if echo "$CHANGED_FILES" | grep -q .env.sample; then
           echo "File has changed"
           echo "CHANGED=true" >> $GITHUB_ENV
-          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues"
-          TITLE="Environment Changes"
+          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
           BODY="Environment File Changed"
-          curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
+          curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
         else
           echo "File has not changed"
           echo "CHANGED=false" >> $GITHUB_ENV

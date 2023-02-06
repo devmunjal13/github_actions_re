@@ -22,7 +22,7 @@ jobs:
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues"
           TITLE="Build Failed"
           BODY="The build failed for the following reason: ..."
-          curl -H "Authorization: token ${secrets.TOKEN_SECRET}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
+          curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
         else
           echo "File has not changed"
           echo "CHANGED=false" >> $GITHUB_ENV

@@ -26,4 +26,7 @@ jobs:
       run: echo $CHANGED
     - name: Check wether changes in file or not  
       if: ${{ env.CHANGED == true }}
-      run: echo "File Changed"
+      run: |
+          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${GITHUB_PULL_REQUEST}/comments"
+          MESSAGE="The build has completed."
+          curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST -d "{\"body\":\"$MESSAGE\"}" $API_URL

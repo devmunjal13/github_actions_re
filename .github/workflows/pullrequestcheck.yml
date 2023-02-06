@@ -13,9 +13,17 @@ jobs:
     - name: Check for changes in file
       run: |
         git fetch
-        echo "CHANGED_FILES=$(git diff origin/main --name-only)" >> $GITHUB_ENV
-    - name: Print Env
-      run: echo $CHANGED_FILES
+        CHANGED_FILES="$(git diff origin/main --name-only)"
+        echo "$CHANGED_FILES"
+        if echo "$CHANGED_FILES" | grep -q .env.sample; then
+          echo "File has changed"
+          echo "CHANGED=true" >> $GITHUB_ENV
+        else
+          echo "File has not changed"
+          echo "CHANGED=false" >> $GITHUB_ENV
+        fi
+    - name: Print Output
+      run: echo $CHANGED
     - name: Check wether changes in file or not  
-      if: ${{ env.CHANGED_FILES | grep -q .env.sample }}
+      if: ${{ env.CHANGED == true }}
       run: echo "File Changed"

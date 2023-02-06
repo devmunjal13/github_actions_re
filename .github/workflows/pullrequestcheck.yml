@@ -15,7 +15,7 @@ jobs:
         git fetch
         CHANGED_FILES="$(git diff origin/main --name-only)"
         echo "$CHANGED_FILES"
-        echo "$GITHUB_TOKEN"
+        echo "${secrets.TOKEN_NAME}"
         echo "$GITHUB_REPOSITORY"
         if echo "$CHANGED_FILES" | grep -q .env.sample; then
           echo "File has changed"
@@ -23,7 +23,7 @@ jobs:
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues"
           TITLE="Build Failed"
           BODY="The build failed for the following reason: ..."
-          curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
+          curl -H "Authorization: token ${secrets.TOKEN_NAME}" -X POST -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\"}" $API_URL
         else
           echo "File has not changed"
           echo "CHANGED=false" >> $GITHUB_ENV

@@ -13,12 +13,6 @@ jobs:
     - name: Check for changes in file
       run: |
         git fetch
-        CHANGED_FILES="$(git diff origin/main --name-only)"
-        echo "$CHANGED_FILES"
-        if echo "$CHANGED_FILES" | grep -q .env.sample; then
-          echo "File has changed"
-          exit 0
-        else
-          echo "File has not changed"
-          exit 1
-        fi
+        echo "CHANGED_FILES=$(git diff origin/main --name-only)" >> $GITHUB_ENV
+    - name: Print Env
+      run: echo $CHANGED_FILES

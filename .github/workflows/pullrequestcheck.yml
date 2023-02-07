@@ -23,6 +23,8 @@ jobs:
           echo "$ALL_CHANGES"
           EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
           PULL_REQUEST_NUMBER=$(echo $EVENT_DATA | jq .pull_request.number)
+          TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref)
+          echo "$TARGET_BRANCH_NAME"
           if echo "$CHANGED_FILES" | grep -q .env.sample; then
             echo "File has changed"
             echo "CHANGED=true" >> $GITHUB_ENV

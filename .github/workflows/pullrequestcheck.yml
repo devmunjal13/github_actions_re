@@ -35,8 +35,16 @@ jobs:
             echo "File has changed"
             echo "CHANGED=true" >> $GITHUB_ENV
             API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
-            BODY="Environment File Changed @devmunjal13"
-            curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+            if [ "$TARGET_BRANCH_NAME"== "release" ]; then
+              BODY="Environment File Changed @devmunjal13 PROD akv"
+              curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+            elif [ "$TARGET_BRANCH_NAME"== "staging" ]; then
+              BODY="Environment File Changed @devmunjal13 UAT akv"
+              curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+            else 
+              BODY="Environment File Changed @devmunjal13 DEV akv"
+              curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+            fi
           else
             echo "File has not changed"
             echo "CHANGED=false" >> $GITHUB_ENV

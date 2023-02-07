@@ -1,32 +1,35 @@
 name: Check File Changes
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+      - release
 
 jobs:
   tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Check for changes in file
-      run: |
-        git fetch
-        CHANGED_FILES="$(git diff origin/main --name-only)"
-        echo "$CHANGED_FILES"
-        echo "$GITHUB_REPOSITORY"
-        EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
-        PULL_REQUEST_NUMBER=$(echo $EVENT_DATA | jq .pull_request.number)
-        if echo "$CHANGED_FILES" | grep -q .env.sample; then
-          echo "File has changed"
-          echo "CHANGED=true" >> $GITHUB_ENV
-          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
-          BODY="Environment File Changed"
-          curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
-        else
-          echo "File has not changed"
-          echo "CHANGED=false" >> $GITHUB_ENV
-        fi
-    - name: Print Output
-      run: echo $CHANGED
+      - name: Check for changes in file
+        run: |
+          git fetch
+          CHANGED_FILES="$(git diff origin/main --name-only)"
+          ALL_CHANGES="$(git diff origin/main)"
+          echo "$ALL_CHANGES"
+          EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
+          PULL_REQUEST_NUMBER=$(echo $EVENT_DATA | jq .pull_request.number)
+          if echo "$CHANGED_FILES" | grep -q .env.sample; then
+            echo "File has changed"
+            echo "CHANGED=true" >> $GITHUB_ENV
+            API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
+            BODY="Environment File Changed"
+            curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+          else
+            echo "File has not changed"
+            echo "CHANGED=false" >> $GITHUB_ENV
+          fi

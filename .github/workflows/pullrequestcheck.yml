@@ -1,22 +1,23 @@
 name: Check File Changes
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+      - release
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Check for changes in file
-      run: |
-        CHANGED_FILES="$(git diff HEAD^1 --name-only)"
-        if echo "$CHANGED_FILES" | grep -q .env.sample; then
-          echo "File has changed"
-          exit 0
-        else
-          echo "File has not changed"
-          exit 1
-        fi
+      - name: Check for changes in file
+        run: |
+          git fetch
+          ALL_CHANGES="$(git diff --name-status origin/main)"
+          echo "$ALL_CHANGES"
+          

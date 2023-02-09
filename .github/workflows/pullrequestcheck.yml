@@ -18,7 +18,7 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
-          ALL_CHANGES= "$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
+          ALL_CHANGES= "$(git ls-files -r origin/main --name-only src/main/resources/db/migration)"
           echo "$ALL_CHANGES"
           FILES_INDIR="$(ls -a src/main/resources/db/migration)"
           echo "$FILES_INDIR"

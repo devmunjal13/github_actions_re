@@ -21,6 +21,6 @@ jobs:
           ALL_CHANGES="$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
           echo "$ALL_CHANGES"
           echo HII
-          FILES_INDIR="$(ls -d src/main/resources/db/migration)"
+          FILES_INDIR="$(ls -ad src/main/resources/db/migration)"
           echo "$FILES_INDIR"
           

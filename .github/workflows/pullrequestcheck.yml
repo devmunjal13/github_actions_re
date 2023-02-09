@@ -18,6 +18,6 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
-          ALL_CHANGES="$(git diff --name-status origin/main)"
+          ALL_CHANGES="$(diff -rq origin/main/src/resources/db/migrations /src/resources/db/migrations)"
           echo "$ALL_CHANGES"
           

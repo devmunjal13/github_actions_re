@@ -26,7 +26,7 @@ jobs:
           TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref)
           echo "$TARGET_BRANCH_NAME"
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
-          if [ -n "$(echo "$CHANGED_FILES" | grep -q .env.sample)" ] || [ -n "$(echo "$ALL_CHANGES" | grep -q System.getenv)" ]; then
+          if echo "$CHANGED_FILES" | grep -q .env.sample || echo "$ALL_CHANGES" | grep -q System.getenv; then
             echo "File has changed"
             if [ "$TARGET_BRANCH_NAME"== "release" ]; then
               BODY="Environment File Changed   PROD akv"

@@ -18,9 +18,12 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
-          ALL_CHANGES="$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
-          echo "$ALL_CHANGES"
-          echo HII
-          FILES_INDIR="$(ls -ad src/main/resources/db/migration)"
-          echo "$FILES_INDIR"
-          
+          FILES_IN_BRANCH="$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
+          echo "$FILES_IN_BRANCH"
+          echo "FILES IN LOCAL"
+          FILES_INDIR="$(ls src/main/resources/db/migration)"
+          echo "$FILES_IN_DIR"
+          FILE_COUNT_IN_BRANCH="$(echo -n "$FILES_IN_BRANCH" | wc -l)"
+          FILE_COUNT_IN_DIR="$(echo -n "$FILES_IN_DIR" | wc -l)"
+          echo $FILE_COUNT_IN_BRANCH
+          echo $FILE_COUNT_IN_DIR

@@ -18,12 +18,10 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
+          DIFFRENCE_DIRECTORY="$(git diff origin/main:src/main/resources/db/migration src/main/resources/db/migration)"
+          echo "$DIFFRENCE_DIRECTORY"
           FILES_IN_BRANCH="$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
           echo "$FILES_IN_BRANCH"
           echo "FILES IN LOCAL"
           FILES_IN_DIR="$(ls src/main/resources/db/migration)"
           echo "$FILES_IN_DIR"
-          FILE_COUNT_IN_BRANCH="$(echo -n "$FILES_IN_BRANCH" | wc -l)"
-          FILE_COUNT_IN_DIR="$(echo -n "$FILES_IN_DIR" | wc -l)"
-          echo $FILE_COUNT_IN_BRANCH
-          echo $FILE_COUNT_IN_DIR

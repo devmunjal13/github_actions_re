@@ -18,10 +18,14 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
-          DIFFRENCE_DIRECTORY="$(git diff --name-status origin/main:src/main/resources/db/migration src/main/resources/db/migration)"
+          TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref)
+          DIFFRENCE_DIRECTORY="$(git diff origin/$TARGET_BRANCH_NAME:src/main/resources/db/migration src/main/resources/db/migration)"
           echo "$DIFFRENCE_DIRECTORY"
-          FILES_IN_BRANCH="$(git ls-tree -r origin/main --name-only src/main/resources/db/migration)"
-          echo "$FILES_IN_BRANCH"
+          FILES_IN_TARGET_BRANCH="$(git ls-tree -r origin/$TARGET_BRANCH_NAME --name-only src/main/resources/db/migration)"
+          echo "$FILES_IN_TARGET_BRANCH"
           echo "FILES IN LOCAL"
           FILES_IN_DIR="$(ls src/main/resources/db/migration)"
           echo "$FILES_IN_DIR"
+          while IFS='' read -r line; do
+          TIME_STAMP_IN_MAIN+=("$(echo $line | grep -o '[0-9]\{10\}')")
+          done <<< "$FILES_IN_TARGET_BRANCH"

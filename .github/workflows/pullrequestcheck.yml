@@ -19,9 +19,9 @@ jobs:
         run: |
           git fetch
           TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref)
-          DIFFRENCE_DIRECTORY="$(git diff origin/"$TARGET_BRANCH_NAME":src/main/resources/db/migration src/main/resources/db/migration)"
+          DIFFRENCE_DIRECTORY="$(git diff "origin/$TARGET_BRANCH_NAME":src/main/resources/db/migration src/main/resources/db/migration)"
           echo "$DIFFRENCE_DIRECTORY"
-          FILES_IN_TARGET_BRANCH="$(git ls-tree -r origin/"$TARGET_BRANCH_NAME" --name-only src/main/resources/db/migration)"
+          FILES_IN_TARGET_BRANCH="$(git ls-tree -r "origin/$TARGET_BRANCH_NAME" --name-only src/main/resources/db/migration)"
           echo "$FILES_IN_TARGET_BRANCH"
           echo "FILES IN LOCAL"
           FILES_IN_DIR="$(ls src/main/resources/db/migration)"

@@ -21,7 +21,7 @@ jobs:
           EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
           TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref | tr -d '"')
           echo $TARGET_BRANCH_NAME
-          DIFFRENCE_DIRECTORY="$(git diff "origin/$TARGET_BRANCH_NAME":src/main/resources/db/migration src/main/resources/db/migration)"
+          DIFFRENCE_DIRECTORY="$(git diff --name-only "origin/$TARGET_BRANCH_NAME":src/main/resources/db/migration src/main/resources/db/migration)"
           echo "$DIFFRENCE_DIRECTORY"
           FILES_IN_TARGET_BRANCH="$(git ls-tree -r "origin/$TARGET_BRANCH_NAME" --name-only src/main/resources/db/migration)"
           echo "$FILES_IN_TARGET_BRANCH"
@@ -29,6 +29,7 @@ jobs:
           FILES_IN_DIR="$(ls src/main/resources/db/migration)"
           echo "$FILES_IN_DIR"
           TIME_STAMP_IN_BRANCH=""
+          TIME_STAMP_IN_DIFFRENCE=""
           while IFS='' read -r line; do
               TIME_STAMP="$(echo $line | grep -o '[0-9]\{10\}')"
               if [ -n "$TIME_STAMP" ]; then
@@ -36,3 +37,10 @@ jobs:
               fi
           done <<< "$FILES_IN_TARGET_BRANCH"
           echo $TIME_STAMP_IN_BRANCH
+          while IFS='' read -r line; do
+              TIME_STAMP="$(echo $line | grep -o '[0-9]\{10\}')"
+              if [ -n "$TIME_STAMP" ]; then
+                  TIME_STAMP_IN_DIFFRENCE="$TIME_STAMP_IN_DIFFRENCE,$TIME_STAMP"
+              fi
+          done <<< "$DIFFRENCE_DIRECTORY"
+          echo $TIME_STAMP_IN_DIFFRENCE

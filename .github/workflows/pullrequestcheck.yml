@@ -29,5 +29,6 @@ jobs:
           FILES_IN_DIR="$(ls src/main/resources/db/migration)"
           echo "$FILES_IN_DIR"
           while IFS='' read -r line; do
-          TIME_STAMP_IN_MAIN+=("$(echo $line | grep -o '[0-9]\{10\}')")
+          TIME_STAMP_IN_BRANCH+="$(echo $line | grep -o '[0-9]\{10\}')"
           done <<< "$FILES_IN_TARGET_BRANCH"
+          echo $TIME_STAMP_IN_BRANCH

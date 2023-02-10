@@ -18,6 +18,7 @@ jobs:
       - name: Check for changes in file
         run: |
           git fetch
+          EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
           TARGET_BRANCH_NAME=$(echo $EVENT_DATA | jq .pull_request.base.ref)
           echo $TARGET_BRANCH_NAME
           DIFFRENCE_DIRECTORY="$(git diff "origin/$TARGET_BRANCH_NAME":src/main/resources/db/migration src/main/resources/db/migration)"

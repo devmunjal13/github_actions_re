@@ -38,8 +38,9 @@ jobs:
           for val in "${TIME_STAMP_IN_DIFFRENCE[@]}"; do
             
             if [[ "$val" -lt "$TIME_STAMP_IN_BRANCH_LAST" ]]; then
-              BODY="Stale Time Stamp @davidson-mohanty_tdpl migrations"
+              BODY="Stale Time Stamp migrations"
               curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
+              exit 1
             fi
           done
 

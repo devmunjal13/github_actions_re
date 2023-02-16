@@ -30,6 +30,6 @@ jobs:
           echo "$FILES_IN_DIR"
           TIME_STAMP_IN_BRANCH=($(echo "$FILES_IN_TARGET_BRANCH" | grep -oE 'v[0-9]+' | cut -c2-))
           TIME_STAMP_IN_DIFFRENCE=($(echo "$DIFFRENCE_DIRECTORY" | grep -oE 'v[0-9]+' | cut -c2-))
-          echo "$TIME_STAMP_IN_BRANCH[@]"
-          echo "$TIME_STAMP_IN_DIFFRENCE[@]"
+          echo "${TIME_STAMP_IN_BRANCH[@]}"
+          echo "${TIME_STAMP_IN_DIFFRENCE[@]}"
 

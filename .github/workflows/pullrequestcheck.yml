@@ -36,7 +36,8 @@ jobs:
           PULL_REQUEST_NUMBER=$(echo $EVENT_DATA | jq .pull_request.number)
           API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST_NUMBER}/reviews"
           for val in "${TIME_STAMP_IN_DIFFRENCE[@]}"; do
-            if [[ "$val" -gt "$TIME_STAMP_IN_BRANCH_LAST" ]]; then
+            
+            if [[ "$val" -lt "$TIME_STAMP_IN_BRANCH_LAST" ]]; then
               BODY="Stale Time Stamp @davidson-mohanty_tdpl migrations"
               curl -H "Authorization: token ${{secrets.TOKEN_SECRET}}" -X POST -d "{\"body\":\"$BODY\",\"event\":\"COMMENT\"}" $API_URL
             fi
